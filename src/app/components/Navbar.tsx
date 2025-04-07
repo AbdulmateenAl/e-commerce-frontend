@@ -1,6 +1,6 @@
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 
-export default function Navbar() {
+export default function Navbar({ children }: { children: React.ReactNode}) {
   return (
     <nav className="grid grid-cols-8 gap-4 p-4">
         <header className="flex items-center justify-between col-span-8">
@@ -26,7 +26,7 @@ export default function Navbar() {
           </ul>
         </section>
 
-        <div className="col-span-6"></div>
+        <div className="col-span-6 grid-flow-row">{children}</div>
 
         <section className="text-left">
           <h4 className="font-semibold text-sm">Sort by</h4>

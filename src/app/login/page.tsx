@@ -38,7 +38,10 @@ export default function LogIn() {
     }
     
     return (
-        <div className="flex items-center justify-center bg-blue-600 h-screen">
+        <div className="flex items-center justify-center bg-linear-to-r from-blue-950 to-cyan-500 h-screen p-5">
+            <div className="bg-black px-4 py-2 rounded-xl">
+                <h3 className="text-white font-bold">ALMAZ STORE</h3>
+            </div>
             <div className="flex flex-col gap-4 bg-white rounded-3xl size-fit px-10 py-6">
                 <h3 className="text-2xl font-semibold">Log into Your account</h3>
                 <div>
