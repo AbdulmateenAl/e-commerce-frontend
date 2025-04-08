@@ -1,6 +1,7 @@
 "use client";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 
 import Navbar from "./components/Navbar"
 
@@ -14,7 +15,8 @@ type DecodedToken = {
 type Product = {
   id?: number,
   name: string,
-  price: number
+  price: number,
+  imageUrl: string
 }
 
 export default function Home() {
@@ -38,7 +40,7 @@ export default function Home() {
       }
       setUser(decodedToken.user)
 
-      fetch(`http://localhost:5000/${decodedToken.user}/products`, {
+      fetch(`http://localhost:5000/${decodedToken.user}/test`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -58,10 +60,11 @@ export default function Home() {
   return (
     <div className="p-3">
       <Navbar>
-        <div className="grid grid-cols-4 gap-4">
+        <div className="grid grid-cols-3 gap-4">
           {products.map((product, index) => (
             <div key={index} className="shadow-md p-3 border-2 border-gray-400">
-              <p className="text-2xl">{product.name}</p>
+              <Image src={product.imageUrl} alt={product.name} width={300} height={500}/>
+              <p className="text-2xl text-wrap">{product.name}</p>
               <p className="text-md">{product.price}</p>
             </div>
           ))}

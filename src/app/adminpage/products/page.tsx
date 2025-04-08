@@ -1,60 +1,69 @@
 "use client";
-import AddCircleOutlineRoundedIcon from '@mui/icons-material/AddCircleOutlineRounded';
+import AddCircleOutlineRoundedIcon from "@mui/icons-material/AddCircleOutlineRounded";
 import EditRoundedIcon from "@mui/icons-material/EditRounded";
 import DeleteRoundedIcon from "@mui/icons-material/DeleteRounded";
 
 import AdminNav from "@/app/components/AdminNav";
 
-import { jwtDecode } from 'jwt-decode';
-import { useState, useEffect } from 'react';
+import { jwtDecode } from "jwt-decode";
+import { useState, useEffect } from "react";
+import AddProductModal from "./AddProductModal";
 
 type DecodedToken = {
-    user: string,
-    exp?: number
-}
+	user: string;
+	exp?: number;
+};
 
 type Product = {
-    id: number,
-    name: string,
-    price: number
-  }
+	id: number;
+	name: string;
+	price: number;
+    quantity: number
+};
 
 export default function Products() {
-    const [user, setUser] = useState<string | null>(null);
-    const [products, setProducts] = useState<Product[]>([]);
+	const [user, setUser] = useState<string | null>(null);
+	const [products, setProducts] = useState<Product[]>([]);
+	const [isModalOpen, setIsModalOpen] = useState(false);
 
-    const addProduct = async () => {
-        const token = localStorage.getItem("token")
-        if (token) {
-            const decodedToken = jwtDecode(token)
+	const showModal = () => {
+		setIsModalOpen(true);
+	};
+	const closeModal = () => {
+		setIsModalOpen(false);
+	};
 
-            const new_product = {
-                id: 20,
-                name: "new product",
-                price: 20
-            }
+	const addProduct = async () => {
+		const token = localStorage.getItem("token");
+		if (token) {
+			const decodedToken = jwtDecode(token);
 
-            await fetch(`http://localhost:5000/${decodedToken.user}/product`, {
-                method: "POST",
-                headers: {
-                  "Content-Type": "application/json",
-                },
-                body: JSON.stringify(new_product),
-                })
-                .then(res => res.json())
-                .then((data) => {
-                console.log(data);
-                setProducts((prevState) =>
-                [...prevState, new_product])
-                })
-        }
-    }
+			const new_product = {
+				id: 20,
+				name: "new product",
+				price: 20,
+			};
 
-    const editProduct = async (id: number) => {
-        const updatedProduct = {
-            name: "updated_product",
-            price: 30
-        }
+			await fetch(`http://localhost:5000/${decodedToken.user}/product`, {
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json",
+				},
+				body: JSON.stringify(new_product),
+			})
+				.then((res) => res.json())
+				.then((data) => {
+					console.log(data);
+					setProducts((prevState) => [...prevState, new_product]);
+				});
+		}
+	};
+
+	const editProduct = async (id: number) => {
+		const updatedProduct = {
+			name: "updated_product",
+			price: 30,
+		};
 		await fetch(`http://localhost:5000/product/${id}`, {
 			method: "PUT",
 			headers: {
@@ -84,73 +93,90 @@ export default function Products() {
 			})
 			.catch((err) => console.error("Error deleting order:", err));
 	};
-    
-    useEffect(() => {
-        const token = localStorage.getItem("token")
-    
-        if (token) {
-            const decodedToken = jwtDecode<DecodedToken>(token)
-            setUser(decodedToken.user)
-            
-            fetch(`http://localhost:5000/${decodedToken.user}/products`, {
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                },
-            })
-            .then(res => res.json())
-            .then((data) => {
-                console.log(data.products)
-                setProducts(data.products)
-            })
-        }
-        
-    }, [])
-    
-    return (
-        <div className="flex">
-        <AdminNav />
-        <div className="flex-1 p-6">
-            <div className='flex flex-col gap-3'>
-                <div className="flex items-center justify-between">
-                    <p>Dashboard</p>
-                    <input type="text" placeholder="🔍Search..." className="border-2 border-gray-400 p-2 rounded-xl"/>
-                </div>
-                <div className="flex items-center justify-between">
-                    <p className="text-sm">All</p>
-                    <button className='bg-black text-white rounded-lg px-3 py-1 cursor-pointer' onClick={() => addProduct()}>
-                        <AddCircleOutlineRoundedIcon className='' fontSize='small' />
-                        Add Product
-                    </button>
-                </div>
-                <div className='bg-gray-300 shadow-lg p-2 rounded-md'>
-                    <h4 className='font-bold text-3xl'>Products</h4>
-                    <p className='text-sm'>Manage your products and view their sales performance</p>
-                    <table className='w-full border-b-2 border-gray-400 items-center'>
-                        <thead className='border-b-2 border-gray-700 text-left'>
-                            <tr>
-                                <th>Name</th>
-                                <th>Price</th>
-                                <th>Quantity</th>
-                                <th>Action</th>
-                            </tr>
-                        </thead>
-                        <tbody className='text-left border-b-2 border-gray-500 w-full'>
-                            {products.map((product: Product) => (
-                                <tr key={product.id}>
-                                    <td>{product.name}</td>
-                                    <td>{product.price}</td>
-                                    <td>{10}</td>
-                                    <td>
-                                        <EditRoundedIcon className='text-blue-600 cursor-pointer' onClick={() => editProduct(product.id)}/>
-                                        <DeleteRoundedIcon className='text-red-600 cursor-pointer' onClick={() => deleteProduct(product.id)}/>
-                                    </td>
-                                </tr>
-                            ))}
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-    </div>
-)
+
+	useEffect(() => {
+		const token = localStorage.getItem("token");
+
+		if (token) {
+			const decodedToken = jwtDecode<DecodedToken>(token);
+			setUser(decodedToken.user);
+
+			fetch(`http://localhost:5000/${decodedToken.user}/test`, {
+				headers: {
+					Authorization: `Bearer ${token}`,
+				},
+			})
+				.then((res) => res.json())
+				.then((data) => {
+					console.log(data.products);
+					setProducts(data.products);
+				});
+		}
+	}, []);
+
+	return (
+        <>
+        <AddProductModal show={isModalOpen} onClose={closeModal}/>
+		<div className="flex">
+			<AdminNav />
+			<div className="flex-1 p-6">
+				<div className="flex flex-col gap-3">
+					<div className="flex items-center justify-between">
+						<p>Dashboard</p>
+						<input
+							type="text"
+							placeholder="🔍Search..."
+							className="border-2 border-gray-400 p-2 rounded-xl"
+						/>
+					</div>
+					<div className="flex items-center justify-between">
+						<p className="text-sm">All</p>
+						<button
+							className="bg-black text-white rounded-lg px-3 py-1 cursor-pointer"
+							onClick={showModal}
+						>
+							<AddCircleOutlineRoundedIcon className="" fontSize="small" />
+							Add Product
+						</button>
+					</div>
+					<div className="bg-gray-300 shadow-lg p-2 rounded-md">
+						<h4 className="font-bold text-3xl">Products</h4>
+						<p className="text-sm">
+							Manage your products and view their sales performance
+						</p>
+						<table className="w-full border-b-2 border-gray-400 items-center">
+							<thead className="border-b-2 border-gray-700 text-left">
+								<tr>
+									<th>Name</th>
+									<th>Price</th>
+									<th>Quantity</th>
+									<th>Action</th>
+								</tr>
+							</thead>
+							<tbody className="text-left border-b-2 border-gray-500 w-full">
+								{products.map((product: Product) => (
+									<tr key={product.id}>
+										<td>{product.name}</td>
+										<td>{product.price}</td>
+										<td>{product.quantity}</td>
+										<td>
+											<EditRoundedIcon
+												className="text-blue-600 cursor-pointer"
+												onClick={() => editProduct(product.id)}
+											/>
+											<DeleteRoundedIcon
+												className="text-red-600 cursor-pointer"
+												onClick={() => deleteProduct(product.id)}
+											/>
+										</td>
+									</tr>
+								))}
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+        </>
+	);
 }
