@@ -101,7 +101,7 @@ export default function Products() {
 			const decodedToken = jwtDecode<DecodedToken>(token);
 			setUser(decodedToken.user);
 
-			fetch(`http://localhost:5000/${decodedToken.user}/test`, {
+			fetch(`http://localhost:5000/${decodedToken.user}/products`, {
 				headers: {
 					Authorization: `Bearer ${token}`,
 				},

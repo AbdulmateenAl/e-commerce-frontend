@@ -1,6 +1,6 @@
 "use client";
 import { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import Image from "next/image";
 
 import Navbar from "./components/Navbar"
@@ -23,9 +23,8 @@ export default function Home() {
   const [user, setUser] = useState<string | null>(null);
   const [products, setProducts] = useState<Product[]>([]);
   const router = useRouter();
-
-  const expiry = Math.floor(Date.now() / 1000)
-  console.log(expiry)
+  const searchParams = useSearchParams();
+  const [category, setCategory] = useState(searchParams.get("category") || "All"); // "All" incase we don,t have a category
 
   useEffect(() => {
     const token = localStorage.getItem("token")
@@ -40,7 +39,7 @@ export default function Home() {
       }
       setUser(decodedToken.user)
 
-      fetch(`http://localhost:5000/${decodedToken.user}/test`, {
+      fetch(`http://localhost:5000/${decodedToken.user}/products`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -48,7 +47,7 @@ export default function Home() {
       .then(res => res.json())
       .then((data) => {
         console.log(data.products)
-        console.log(user)
+        console.log(decodedToken.user)
         setProducts(data.products)
       })
     } else {

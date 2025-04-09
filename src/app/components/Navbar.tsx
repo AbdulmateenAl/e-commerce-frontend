@@ -1,6 +1,19 @@
+import { useEffect, useState } from "react";
+import { useSearchParams, useRouter } from "next/navigation";
+
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 
 export default function Navbar({ children }: { children: React.ReactNode}) {
+  const searchParams = useSearchParams();
+  const router = useRouter();
+  
+  
+  const handleCategory = async () => {
+    const data = await fetchData();
+    console.log(data.category);
+    
+  }
+  
   return (
     <nav className="grid grid-cols-8 gap-4 p-4">
         <header className="flex items-center justify-between col-span-8">
@@ -18,11 +31,10 @@ export default function Navbar({ children }: { children: React.ReactNode}) {
         <section>
           <h4 className="font-semibold text-sm">Collections</h4>
           <ul className="text-sm space-y-1 cursor-pointer focus:underline">
-            <li className="font-medium">All</li>
-            <li>Shoes</li>
-            <li>T-Shirts</li>
-            <li>Cars</li>
-            <li>Phones</li>
+            <li className="font-medium" onClick={() => handleCategory()}>All</li>
+            <li onClick={() => handleCategory()}>Clothings</li>
+            <li onClick={() => handleCategory()}>Vehicle</li>
+            <li onClick={() => handleCategory()}>Electronics</li>
           </ul>
         </section>
 
@@ -31,7 +43,6 @@ export default function Navbar({ children }: { children: React.ReactNode}) {
         <section className="text-left">
           <h4 className="font-semibold text-sm">Sort by</h4>
           <ul className="text-sm space-y-1 cursor-pointer focus:underline">
-            <li>Relevance</li>
             <li>Trending</li>
             <li>Latest arrivals</li>
             <li>Price: Low to High</li>
@@ -40,4 +51,12 @@ export default function Navbar({ children }: { children: React.ReactNode}) {
         </section>
         </nav>
   );
+}
+
+async function fetchData() {
+  const res = await fetch("http://localhost:5000");
+  if (!res.ok) {
+    alert("An error occurred while categorizing")
+  }
+  return res.json()
 }
