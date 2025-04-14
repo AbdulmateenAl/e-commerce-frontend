@@ -22,7 +22,7 @@ export default function Orders() {
 	const [orders, setOrders] = useState<Order[]>([]);
 
 	const editOrder = async (id: number, quantity: number) => {
-		await fetch(`${process.env.BASE_URL}/order/${id}`, {
+		await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/order/${id}`, {
 			method: "PUT",
 			headers: {
 				"Content-Type": "application/json",
@@ -37,7 +37,7 @@ export default function Orders() {
 	};
 
 	const deleteOrder = async (id: number) => {
-		await fetch(`${process.env.BASE_URL}/order/${id}`, {
+		await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/order/${id}`, {
 			method: "DELETE",
 			headers: {
 				"Content-Type": "application/json",
@@ -59,7 +59,7 @@ export default function Orders() {
 			const decodedToken = jwtDecode<DecodedToken>(token);
 			setUser(decodedToken.user);
 
-			fetch(`${process.env.BASE_URL}/${decodedToken.user}/orders`, {
+			fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/${decodedToken.user}/orders`, {
 				headers: {
 					Authorization: `Bearer ${token}`,
 				},

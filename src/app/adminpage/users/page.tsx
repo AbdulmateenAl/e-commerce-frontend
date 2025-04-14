@@ -29,7 +29,7 @@ export default function Users() {
         }
 
         try {
-            const response = await fetch(`${process.env.BASE_URL}/user/${id}`, {
+            const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/user/${id}`, {
                 method: "DELETE",
             });
             const data = await response.json();
@@ -46,7 +46,7 @@ export default function Users() {
 
     useEffect(() => {
         setLoading(true);
-        fetch(`${process.env.BASE_URL}/users`)
+        fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/users`)
             .then((res) => res.json())
             .then((data) => {
                 setUsers(data.users);

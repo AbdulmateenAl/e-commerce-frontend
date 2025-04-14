@@ -41,7 +41,7 @@ export default function SignUp() {
                 password
             };
 
-            const response = await fetch(`${process.env.BASE_URL}/signup`, {
+            const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/signup`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",

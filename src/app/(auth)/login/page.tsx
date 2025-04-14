@@ -29,7 +29,7 @@ export default function LogIn() {
                 username: username,
                 password: password
             };
-            const response = await fetch(`${process.env.BASE_URL}/login`, {
+            const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/login`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",

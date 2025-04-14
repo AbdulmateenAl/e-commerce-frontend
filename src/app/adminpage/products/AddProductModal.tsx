@@ -47,7 +47,7 @@ export default function AddProductModal({show, onClose}: Props) {
         const token = localStorage.getItem('token');
         if (token) {
             const decodedToken = jwtDecode<DecodedToken>(token);
-            await fetch(`${process.env.BASE_URL}/${decodedToken.user}/product`, {
+            await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/${decodedToken.user}/product`, {
                 method: "POST",
                 body: formData,
                 headers: {

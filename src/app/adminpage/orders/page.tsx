@@ -76,7 +76,7 @@ export default function Orders() {
                 return;
             }
             
-            fetch(`${process.env.BASE_URL}/${decodedToken.user}/orders`)
+            fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/${decodedToken.user}/orders`)
                 .then((res) => res.json())
                 .then((data) => {
                     setOrders(data.orders);
