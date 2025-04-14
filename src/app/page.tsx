@@ -39,7 +39,7 @@ export default function Home() {
       }
       setUser(decodedToken.user)
 
-      fetch(`http://localhost:5000/${decodedToken.user}/products`, {
+      fetch(`${process.env.BASE_URL}/${decodedToken.user}/products`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },

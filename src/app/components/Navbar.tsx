@@ -138,7 +138,7 @@ export default function Navbar({ children, onCartClick, cartItemsCount }: Navbar
 }
 
 // async function fetchData() {
-//   const res = await fetch("http://localhost:5000/category");
+//   const res = await fetch(`${process.env.BASE_URL}/category`);
 //   if (!res.ok) {
 //     throw new Error("Failed to fetch categories");
 //   }

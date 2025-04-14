@@ -49,7 +49,7 @@ export default function Products() {
         console.log(selectedProduct);
 
         try {
-            const response = await fetch(`http://localhost:5000/product/${id}`, {
+            const response = await fetch(`${process.env.BASE_URL}/product/${id}`, {
                 method: "DELETE",
                 headers: {
                     "Content-Type": "application/json",
@@ -82,7 +82,7 @@ export default function Products() {
 
             setUser(decodedToken.user);
 
-            fetch(`http://localhost:5000/${decodedToken.user}/products`, {
+            fetch(`${process.env.BASE_URL}/${decodedToken.user}/products`, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },
