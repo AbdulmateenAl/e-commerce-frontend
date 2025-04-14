@@ -54,7 +54,7 @@ export default function Home() {
       router.push("/login");
     }
     
-  }, [])
+  }, [router])
 
   const addToCart = (product: Product) => {
     setCartItems(prev => {

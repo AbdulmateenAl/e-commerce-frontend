@@ -16,19 +16,22 @@ export default function Navbar({ children, onCartClick, cartItemsCount }: Navbar
   const router = useRouter();
   const [searchTerm, setSearchTerm] = useState("");
   const [isScrolled, setIsScrolled] = useState(false);
+  const [selectedCategory, setSelectedCategory] = useState<string>("all");
   
   useEffect(() => {
+    setSelectedCategory(searchParams.get("category"))
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 0);
     };
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+  }, [searchParams]);
   
   const handleCategory = async (category: string) => {
     try {
-      const data = await fetchData();
+      // const data = await fetchData();
       router.push(`/?category=${category}`);
+      console.log(selectedCategory);
     } catch (error) {
       console.error("Error fetching category:", error);
     }
@@ -55,7 +58,6 @@ export default function Navbar({ children, onCartClick, cartItemsCount }: Navbar
               </div>
             </Link>
 
-            {/* Search Bar - Hidden on mobile, visible on tablet and up */}
             <form onSubmit={handleSearch} className="hidden sm:block flex-1 max-w-lg mx-4 lg:mx-8">
               <div className="relative">
                 <SearchIcon className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
@@ -69,7 +71,6 @@ export default function Navbar({ children, onCartClick, cartItemsCount }: Navbar
               </div>
             </form>
 
-            {/* Navigation Icons */}
             <div className="flex items-center space-x-2 sm:space-x-4">
               <button 
                 onClick={onCartClick}
@@ -88,7 +89,7 @@ export default function Navbar({ children, onCartClick, cartItemsCount }: Navbar
             </div>
           </div>
 
-          {/* Mobile Search Bar */}
+          {/* For mobile */}
           <div className="sm:hidden pb-3">
             <form onSubmit={handleSearch} className="w-full">
               <div className="relative">
@@ -107,7 +108,6 @@ export default function Navbar({ children, onCartClick, cartItemsCount }: Navbar
       </nav>
 
       <div className="pt-24 sm:pt-16 grid grid-cols-4 sm:grid-cols-6 lg:grid-cols-8 gap-4 p-4 max-w-7xl mx-auto">
-        {/* Categories Sidebar */}
         <aside className="col-span-4 sm:col-span-1">
           <div className="sticky top-20">
             <h4 className="font-semibold text-gray-900 mb-4">Collections</h4>
@@ -116,8 +116,8 @@ export default function Navbar({ children, onCartClick, cartItemsCount }: Navbar
                 <button
                   key={category}
                   onClick={() => handleCategory(category)}
-                  className={`whitespace-nowrap px-4 py-2 rounded-lg text-sm sm:text-base w-auto sm:w-full mb-0 sm:mb-2 mx-2 sm:mx-0 ${
-                    searchParams.get("category") === category.toLowerCase()
+                  className={`whitespace-nowrap cursor-pointer px-4 py-2 rounded-lg text-sm sm:text-base w-auto sm:w-full mb-0 sm:mb-2 mx-2 sm:mx-0 ${
+                    selectedCategory === category.toLowerCase()
                       ? "bg-indigo-100 text-indigo-700 font-medium"
                       : "bg-white text-gray-600 hover:bg-gray-50"
                   }`}
@@ -129,7 +129,6 @@ export default function Navbar({ children, onCartClick, cartItemsCount }: Navbar
           </div>
         </aside>
 
-        {/* Main Content */}
         <div className="col-span-4 sm:col-span-5 lg:col-span-7">
           {children}
         </div>
@@ -138,10 +137,10 @@ export default function Navbar({ children, onCartClick, cartItemsCount }: Navbar
   );
 }
 
-async function fetchData() {
-  const res = await fetch("http://localhost:5000");
-  if (!res.ok) {
-    throw new Error("Failed to fetch categories");
-  }
-  return res.json();
-}
+// async function fetchData() {
+//   const res = await fetch("http://localhost:5000/category");
+//   if (!res.ok) {
+//     throw new Error("Failed to fetch categories");
+//   }
+//   return res.json();
+// }
