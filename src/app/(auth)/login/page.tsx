@@ -44,9 +44,7 @@ export default function LogIn() {
             } else {
                 setError(data.message || "Invalid username or password");
             }
-        } catch (err) {
-            setError(`An error occurred. Please try again. ${err}`);
-        } finally {
+        }finally {
             setLoading(false);
         }
     };
