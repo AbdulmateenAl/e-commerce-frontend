@@ -46,6 +46,7 @@ export default function Products() {
 
     const deleteProduct = async (id: number) => {
         if (!confirm("Are you sure you want to delete this product?")) return;
+        console.log(selectedProduct);
 
         try {
             const response = await fetch(`http://localhost:5000/product/${id}`, {

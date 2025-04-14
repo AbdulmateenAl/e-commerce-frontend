@@ -71,7 +71,7 @@ export default function Orders() {
 				})
 				.catch((error) => console.error("Error fetching orders:", error));
 		}
-	}, []);
+	}, [user]);
 
 	return (
 		<div className="flex flex-col items-center p-6 gap-4">
