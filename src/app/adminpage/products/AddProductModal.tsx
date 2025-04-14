@@ -13,12 +13,13 @@ export default function AddProductModal({show, onClose}: Props) {
     const p_name = useRef<HTMLInputElement>(null);
     const p_price = useRef<HTMLInputElement>(null);
     const quantity = useRef<HTMLInputElement>(null);
-    const [file, setFile] = useState("");
+    const [file, setFile] = useState<File | null>(null);
 
-    const handleFIleChange = (e) => {
-        const selectedFile = e.target.files;
-        console.log(selectedFile[0])
-        setFile(selectedFile[0])
+    const handleFIleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const selectedFile = e.target.files?.[0];
+        if (selectedFile) {
+            setFile(selectedFile)
+        }
     }
 
     
@@ -33,7 +34,7 @@ export default function AddProductModal({show, onClose}: Props) {
         formData.append('product_name', productName)
         formData.append('product_price', productPrice)
         formData.append('product_quantity', productQuantity)
-        formData.append('file', file)
+        if (file) { formData.append('file', file) }
         console.log(formData)
         if (!formData) {
             alert("An input is missing")
