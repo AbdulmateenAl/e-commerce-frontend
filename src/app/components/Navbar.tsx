@@ -19,7 +19,7 @@ export default function Navbar({ children, onCartClick, cartItemsCount }: Navbar
   const [selectedCategory, setSelectedCategory] = useState<string>("all");
   
   useEffect(() => {
-    setSelectedCategory(searchParams.get("category"))
+    setSelectedCategory(searchParams.get("category") || "all")
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 0);
     };
