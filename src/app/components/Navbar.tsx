@@ -25,7 +25,7 @@ export default function Navbar({ children, onCartClick, cartItemsCount }: Navbar
     };
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
-  }, [searchParams]);
+  }, [selectedCategory]);
   
   const handleCategory = async (category: string) => {
     try {

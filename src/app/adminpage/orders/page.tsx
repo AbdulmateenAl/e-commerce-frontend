@@ -46,7 +46,7 @@ export default function Orders() {
 
     const updateOrderStatus = async (orderId: number, newStatus: Order["status"]) => {
         try {
-            const response = await fetch(`http://localhost:5000/order/${orderId}`, {
+            const response = await fetch(`${process.env.BASE_URL}/order/${orderId}`, {
                 method: "PATCH",
                 headers: {
                     "Content-Type": "application/json",
@@ -76,7 +76,7 @@ export default function Orders() {
                 return;
             }
             
-            fetch(`http://localhost:5000/${decodedToken.user}/orders`)
+            fetch(`${process.env.BASE_URL}/${decodedToken.user}/orders`)
                 .then((res) => res.json())
                 .then((data) => {
                     setOrders(data.orders);
