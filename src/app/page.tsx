@@ -1,6 +1,6 @@
 "use client";
 import { useState, useEffect } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import Image from "next/image";
 
 import Navbar from "./components/Navbar"
@@ -54,7 +54,7 @@ export default function Home() {
       router.push("/login");
     }
     
-  }, [router])
+  }, [router, user])
 
   const addToCart = (product: Product) => {
     setCartItems(prev => {

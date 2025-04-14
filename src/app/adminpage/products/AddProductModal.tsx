@@ -1,7 +1,6 @@
 "use client";
 import { useRef, useState } from "react";
 
-import { CldUploadWidget } from "next-cloudinary";
 import Modal from "@/app/components/Modal";
 import { jwtDecode } from "jwt-decode";
 

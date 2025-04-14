@@ -37,12 +37,12 @@ export default function Orders() {
     const [error, setError] = useState("");
     const [statusFilter, setStatusFilter] = useState<string>("all");
 
-    // const filteredOrders = orders.filter(order => {
-    //     const matchesSearch = order.username.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    //         order.id.toString().includes(searchTerm);
-    //     const matchesStatus = statusFilter === "all" || order.status === statusFilter;
-    //     return matchesSearch && matchesStatus;
-    // });
+    const filteredOrders = orders.filter(order => {
+        const matchesSearch = order.username.toLowerCase().includes(searchTerm.toLowerCase()) ||
+            order.id.toString().includes(searchTerm);
+        const matchesStatus = statusFilter === "all" || order.status === statusFilter;
+        return matchesSearch && matchesStatus;
+    });
 
     const updateOrderStatus = async (orderId: number, newStatus: Order["status"]) => {
         try {
@@ -91,7 +91,7 @@ export default function Orders() {
             router.push("/login");
         }
 
-    }, []);
+    }, [router]);
 
     const getStatusIcon = (status: Order["status"]) => {
         switch (status) {

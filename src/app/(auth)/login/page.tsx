@@ -45,7 +45,7 @@ export default function LogIn() {
                 setError(data.message || "Invalid username or password");
             }
         } catch (err) {
-            setError("An error occurred. Please try again.");
+            setError(`An error occurred. Please try again. ${err}`);
         } finally {
             setLoading(false);
         }
@@ -115,7 +115,7 @@ export default function LogIn() {
                     </button>
 
                     <div className="text-center text-sm text-gray-600">
-                        Don't have an account?{" "}
+                        Don&apos;t have an account?{" "}
                         <Link href="/signup" className="text-blue-600 hover:text-blue-700 font-medium">
                             Sign up
                         </Link>

@@ -40,7 +40,7 @@ export default function Users() {
                 setError(data.message || "Error deleting user");
             }
         } catch (err) {
-            setError("Failed to delete user. Please try again.");
+            setError(`Failed to delete user. Please try again. ${err}`);
         }
     };
 

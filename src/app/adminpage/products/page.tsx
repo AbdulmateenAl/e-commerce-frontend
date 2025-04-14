@@ -98,7 +98,7 @@ export default function Products() {
         } else {
             window.location.href = "/login";
         }
-    }, []);
+    }, [user]);
 
     return (
         <div className="min-h-screen bg-gray-50">
@@ -217,18 +217,8 @@ export default function Products() {
 
             {isModalOpen && (
                 <AddProductModal
+                    show={isModalOpen}
                     onClose={closeModal}
-                    product={selectedProduct}
-                    onProductAdded={(newProduct) => {
-                        setProducts([...products, newProduct]);
-                        closeModal();
-                    }}
-                    onProductUpdated={(updatedProduct) => {
-                        setProducts(products.map(p => 
-                            p.id === updatedProduct.id ? updatedProduct : p
-                        ));
-                        closeModal();
-                    }}
                 />
             )}
         </div>
