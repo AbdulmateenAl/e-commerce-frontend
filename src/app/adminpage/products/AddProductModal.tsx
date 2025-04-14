@@ -9,6 +9,11 @@ type Props = {
     onClose: () => void
 }
 
+type DecodedToken = {
+    user: string,
+    exp?: number
+  }
+
 export default function AddProductModal({show, onClose}: Props) {
     const p_name = useRef<HTMLInputElement>(null);
     const p_price = useRef<HTMLInputElement>(null);
@@ -41,7 +46,7 @@ export default function AddProductModal({show, onClose}: Props) {
         }
         const token = localStorage.getItem('token');
         if (token) {
-            const decodedToken = jwtDecode(token);
+            const decodedToken = jwtDecode<DecodedToken>(token);
             await fetch(`http://localhost:5000/${decodedToken.user}/product`, {
                 method: "POST",
                 body: formData,
