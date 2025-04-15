@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 // import { useRouter } from "next/navigation";
 import Image from "next/image";
 
@@ -26,12 +26,17 @@ export default function Home() {
   const [isCartOpen, setIsCartOpen] = useState(false);
   // const router = useRouter();
 
-  fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/products`)
-  .then(res => res.json())
-  .then((data) => {
-    console.log(data.products)
-    setProducts(data.products)
-  })
+  useEffect(() => {
+
+    fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/products`)
+    .then(res => res.json())
+    .then((data) => {
+      console.log(data.products)
+      setProducts(data.products)
+    })
+
+  }, [])
+
 
   // useEffect(() => {
   //   const token = localStorage.getItem("token")
