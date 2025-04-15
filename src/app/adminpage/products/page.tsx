@@ -82,7 +82,7 @@ export default function Products() {
 
             setUser(decodedToken.user);
 
-            fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/${decodedToken.user}/products`, {
+            fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/products`, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },

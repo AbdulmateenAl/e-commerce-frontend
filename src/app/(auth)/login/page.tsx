@@ -40,7 +40,7 @@ export default function LogIn() {
             
             if (response.ok) {
                 localStorage.setItem("token", data.token);
-                router.push("/");
+                router.push("/adminpage");
             } else {
                 setError(data.message || "Invalid username or password");
             }
