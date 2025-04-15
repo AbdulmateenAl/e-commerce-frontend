@@ -1,16 +1,16 @@
 "use client";
-import { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
+import { useState } from "react";
+// import { useRouter } from "next/navigation";
 import Image from "next/image";
 
 import Navbar from "./components/Navbar"
 
-import { jwtDecode } from "jwt-decode";
+// import { jwtDecode } from "jwt-decode";
 
-type DecodedToken = {
-  user: string,
-  exp?: number
-}
+// type DecodedToken = {
+//   user: string,
+//   exp?: number
+// }
 
 type Product = {
   id?: number,
@@ -20,41 +20,37 @@ type Product = {
 }
 
 export default function Home() {
-  const [user, setUser] = useState<string | null>(null);
+  // const [user, setUser] = useState<string | null>(null);
   const [products, setProducts] = useState<Product[]>([]);
   const [cartItems, setCartItems] = useState<(Product & { quantity: number })[]>([]);
   const [isCartOpen, setIsCartOpen] = useState(false);
-  const router = useRouter();
+  // const router = useRouter();
 
-  useEffect(() => {
-    const token = localStorage.getItem("token")
+  fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/products`)
+  .then(res => res.json())
+  .then((data) => {
+    console.log(data.products)
+    setProducts(data.products)
+  })
 
-    if (token) {
-      const decodedToken = jwtDecode<DecodedToken>(token)
+  // useEffect(() => {
+  //   const token = localStorage.getItem("token")
 
-      if (decodedToken.exp && decodedToken.exp < Math.floor(Date.now() / 1000)) {
-        localStorage.removeItem("token");
-        router.push("/login");
-        return
-      }
-      setUser(decodedToken.user)
+  //   if (token) {
+  //     const decodedToken = jwtDecode<DecodedToken>(token)
 
-      fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/${decodedToken.user}/products`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      })
-      .then(res => res.json())
-      .then((data) => {
-        console.log(data.products)
-        console.log(decodedToken.user)
-        setProducts(data.products)
-      })
-    } else {
-      router.push("/login");
-    }
+  //     if (decodedToken.exp && decodedToken.exp < Math.floor(Date.now() / 1000)) {
+  //       localStorage.removeItem("token");
+  //       router.push("/login");
+  //       return
+  //     }
+  //     setUser(decodedToken.user)
+
+  //   } else {
+  //     //router.push("/login");
+  //   }
     
-  }, [router, user])
+  // }, [router, user])
 
   const addToCart = (product: Product) => {
     setCartItems(prev => {
