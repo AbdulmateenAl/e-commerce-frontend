@@ -58,6 +58,7 @@ export default function Home() {
   // }, [router, user])
 
   const addToCart = (product: Product) => {
+
     setCartItems(prev => {
       const existingItem = prev.find(item => item.id === product.id);
       if (existingItem) {

@@ -18,6 +18,7 @@ export default function AddProductModal({show, onClose}: Props) {
     const p_name = useRef<HTMLInputElement>(null);
     const p_price = useRef<HTMLInputElement>(null);
     const quantity = useRef<HTMLInputElement>(null);
+    const category = useRef<HTMLInputElement>(null);
     const [file, setFile] = useState<File | null>(null);
 
     const handleFIleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -34,12 +35,15 @@ export default function AddProductModal({show, onClose}: Props) {
         const productName =  p_name.current?.value ?? "";
         const productPrice = p_price.current?.value ?? "";
         const productQuantity = quantity.current?.value ?? "";
+        const productCategory = category.current?.value ?? "";
 
         const formData = new FormData;
         formData.append('product_name', productName)
         formData.append('product_price', productPrice)
         formData.append('product_quantity', productQuantity)
+        formData.append('product_category', productCategory)
         if (file) { formData.append('file', file) }
+
         console.log(formData)
         if (!formData) {
             alert("An input is missing")
@@ -71,9 +75,10 @@ export default function AddProductModal({show, onClose}: Props) {
                     <input ref={p_name} type="text" placeholder="Product name" className="w-full rounded-md border-2 border-white text-white p-2 outline-2 focus:outline-gray-400"/>
                     <input ref={p_price} type="text" placeholder="Product price" className="w-full rounded-md border-2 border-white text-white p-2 outline-2 focus:outline-gray-400"/>
                     <input ref={quantity} type="text" placeholder="Quantity" className="w-full rounded-md border-2 border-white text-white p-2 outline-2 focus:outline-gray-400"/>
+                    <input ref={category} type="text" placeholder="Category" className="w-full rounded-md border-2 border-white text-white p-2 outline-2 focus:outline-gray-400"/>
                     <div className="flex flex-col gap-4">
                         <input type="file" placeholder="Put your file" onChange={handleFIleChange} className="p-2 text-white cursor-pointer"/>
-                        <button className="p-2 w-full text-white rounded-sm bg-linear-to-bl from-white to-black cursor-pointer border-2 border-white" onClick={createProduct}>Create Product</button>
+                        <button className="p-2 w-full text-white rounded-sm bg-linear-to-bl from-white to-blue-900 cursor-pointer border-2 border-white" onClick={createProduct}>Create Product</button>
                         {/* <CldUploadWidget uploadPreset="ml_default">
                             {({ open }) => {
                                 return <button className="bg-black text-white p-2 w-full rounded-sm cursor-pointer" onClick={() => open()}>Upload an Image</button>;
