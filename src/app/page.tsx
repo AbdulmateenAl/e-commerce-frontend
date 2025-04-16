@@ -14,7 +14,7 @@ type DecodedToken = {
 }
 
 type Product = {
-  id?: number,
+  id: number,
   name: string,
   price: number,
   imageUrl: string
@@ -22,7 +22,12 @@ type Product = {
 
 export default function Home() {
   // const [user, setUser] = useState<string | null>(null);
-  const { cartItems, setCartItems } = useContext(CartContext)
+  const cartContext = useContext(CartContext);
+  if (!cartContext) {
+    throw new Error("CartContext is undefined. Make sure you are using OrderProvider.");
+  }
+  const { cartItems, setCartItems } = cartContext;
+
   const [products, setProducts] = useState<Product[]>([]);
   // const [cartItems, setCartItems] = useState<(Product & { quantity: number })[]>([]);
   const [isCartOpen, setIsCartOpen] = useState(false);
@@ -72,29 +77,33 @@ export default function Home() {
     });
   };
 
-  const checkout = async() => {
+  const checkout = async () => {
+  try {
     const token = localStorage.getItem("token");
-    if (!token) {
-      router.push('/login');
-    }
+    if (!token) return router.push("/login");
+
     const decodedToken = jwtDecode<DecodedToken>(token);
-    if (decodedToken && decodedToken.exp < Date.now() / 1000) {
+    if (!decodedToken || decodedToken.exp! < Date.now() / 1000) {
       localStorage.removeItem("token");
-      router.push('/login');
+      return router.push("/login");
     }
-    console.log(`${process.env.PUBLIC_NEXT_BASE_URL}/${decodedToken.user}/order`)
 
     const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/${decodedToken.user}/order`, {
       method: "POST",
       headers: {
         Authorization: `Bearer ${token}`,
-        "Content-type": "application/json"
+        "Content-Type": "application/json",
       },
-      body: JSON.stringify({"cart": cartItems, "total_amount": totalAmount})
-    })
+      body: JSON.stringify({ cart: cartItems, total_amount: totalAmount }),
+    });
+
     const result = await response.json();
-    console.log(result.message)
+    console.log(result.message);
+  } catch (err) {
+    console.error("Checkout error:", err);
   }
+};
+
 
   const updateQuantity = (productId: number | undefined, newQuantity: number) => {
     if (newQuantity < 1) return;

@@ -2,10 +2,11 @@
 import { createContext, useState } from 'react'
 
 type CartItem = {
+    id?: number,
     name: string,
     price: number,
     quantity: number,
-    imageUrl: string,
+    imageUrl: string
 }
 
 type CartContextType = {
