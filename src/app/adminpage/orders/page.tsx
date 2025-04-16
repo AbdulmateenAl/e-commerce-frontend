@@ -7,6 +7,7 @@ import PendingIcon from "@mui/icons-material/Pending";
 import { useEffect, useState } from "react";
 import { jwtDecode } from "jwt-decode";
 import { useRouter } from "next/navigation";
+import DeleteRoundedIcon from "@mui/icons-material/DeleteRounded";
 
 type DecodedToken = {
 	user: string;
@@ -18,8 +19,7 @@ type Order = {
 	userId: number;
 	name: string;
 	user: string;
-    products: {
-        id: number,
+    cart: {
         name: string,
         quantity: number,
         price: number,
@@ -51,12 +51,27 @@ export default function Orders() {
 			? orders
 			: orders.filter((item) => item.status === statusFilter);
 
+	const deleteOrder = async(orderId: number) => {
+		const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/order/${orderId}`, {
+			method: "DELETE",
+			headers: {
+				"Content-type": "application/json",
+			}
+		});
+		const result = await response.json();
+		if (response.ok) {
+			setOrders(orders.filter((order) => order.id !== orderId))
+		} else {
+			console.log(result.message);
+		}
+	}
+
 	const updateOrderStatus = async (
 		orderId: number,
 		newStatus: Order["status"]
 	) => {
 		try {
-			const response = await fetch(`${process.env.BASE_URL}/order/${orderId}`, {
+			const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/order/${orderId}`, {
 				method: "PATCH",
 				headers: {
 					"Content-Type": "application/json",
@@ -244,7 +259,11 @@ export default function Orders() {
 												</td>
 												<td className="px-6 py-4">
 													<div className="text-sm text-gray-900">
-														{order.name}x {order.quantity}
+															{order.cart.map((product, index) => (
+																<div key={index}>
+																	{product.name}x{product.quantity}
+																</div>
+															))}
 													</div>
 												</td>
 												<td className="px-6 py-4 text-sm text-gray-900">
@@ -265,7 +284,7 @@ export default function Orders() {
 												<td className="px-6 py-4 text-sm text-gray-500">
 													{new Date(order.created_at).toLocaleDateString()}
 												</td>
-												<td className="px-6 py-4 text-right text-sm font-medium">
+												<td className="px-6 py-4 text-right text-sm font-medium items-center">
 													<select
 														value={order.status}
 														onChange={(e) =>
@@ -280,6 +299,9 @@ export default function Orders() {
 														<option value="shipped">Shipped</option>
 														<option value="delivered">Delivered</option>
 													</select>
+													<button className="text-red-600 hover:text-red-800 transition-colors cursor-pointer" onClick={() => deleteOrder(order.id)} >
+														<DeleteRoundedIcon />
+													</button>
 												</td>
 											</tr>
 										))

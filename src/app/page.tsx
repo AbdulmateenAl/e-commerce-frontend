@@ -1,16 +1,17 @@
 "use client";
-import { useState, useEffect } from "react";
-// import { useRouter } from "next/navigation";
+import { useState, useEffect, useContext } from "react";
+import { useRouter } from "next/navigation";
 import Image from "next/image";
 
 import Navbar from "./components/Navbar"
+import CartContext from "@/context/orderContext";
 
-// import { jwtDecode } from "jwt-decode";
+import { jwtDecode } from "jwt-decode";
 
-// type DecodedToken = {
-//   user: string,
-//   exp?: number
-// }
+type DecodedToken = {
+  user: string,
+  exp?: number
+}
 
 type Product = {
   id?: number,
@@ -21,10 +22,11 @@ type Product = {
 
 export default function Home() {
   // const [user, setUser] = useState<string | null>(null);
+  const { cartItems, setCartItems } = useContext(CartContext)
   const [products, setProducts] = useState<Product[]>([]);
-  const [cartItems, setCartItems] = useState<(Product & { quantity: number })[]>([]);
+  // const [cartItems, setCartItems] = useState<(Product & { quantity: number })[]>([]);
   const [isCartOpen, setIsCartOpen] = useState(false);
-  // const router = useRouter();
+  const router = useRouter();
 
   useEffect(() => {
 
@@ -57,7 +59,7 @@ export default function Home() {
     
   // }, [router, user])
 
-  const addToCart = (product: Product) => {
+  const addToCart = async (product: Product) => {
 
     setCartItems(prev => {
       const existingItem = prev.find(item => item.id === product.id);
@@ -70,6 +72,30 @@ export default function Home() {
     });
   };
 
+  const checkout = async() => {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      router.push('/login');
+    }
+    const decodedToken = jwtDecode<DecodedToken>(token);
+    if (decodedToken && decodedToken.exp < Date.now() / 1000) {
+      localStorage.removeItem("token");
+      router.push('/login');
+    }
+    console.log(`${process.env.PUBLIC_NEXT_BASE_URL}/${decodedToken.user}/order`)
+
+    const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/${decodedToken.user}/order`, {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-type": "application/json"
+      },
+      body: JSON.stringify({"cart": cartItems, "total_amount": totalAmount})
+    })
+    const result = await response.json();
+    console.log(result.message)
+  }
+
   const updateQuantity = (productId: number | undefined, newQuantity: number) => {
     if (newQuantity < 1) return;
     setCartItems(prev =>
@@ -77,6 +103,7 @@ export default function Home() {
         item.id === productId ? { ...item, quantity: newQuantity } : item
       )
     );
+    console.log(cartItems);
   };
 
   const removeFromCart = (productId: number | undefined) => {
@@ -152,10 +179,7 @@ export default function Home() {
                 </div>
                 <button
                   className="w-full bg-indigo-600 text-white py-2 px-4 rounded-lg hover:bg-indigo-700 transition-colors"
-                  onClick={() => {
-                    // Handle checkout
-                    alert('Proceeding to checkout...');
-                  }}
+                  onClick={checkout}
                 >
                   Checkout
                 </button>
