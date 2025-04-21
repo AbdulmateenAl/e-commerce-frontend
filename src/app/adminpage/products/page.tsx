@@ -24,7 +24,7 @@ type Product = {
 };
 
 export default function Products() {
-    const router = useRouter();
+	const router = useRouter();
 	const [user, setUser] = useState<string | null>(null);
 	const [products, setProducts] = useState<Product[]>([]);
 	const [isModalOpen, setIsModalOpen] = useState(false);
@@ -106,8 +106,8 @@ export default function Products() {
 					setLoading(false);
 				});
 		} else {
-            localStorage.setItem("redirectAfterLogin", window.location.pathname);
-            router.push("/login");
+			localStorage.setItem("redirectAfterLogin", window.location.pathname);
+			router.push("/login");
 		}
 	}, [user, router]);
 
@@ -205,7 +205,7 @@ export default function Products() {
 													</div>
 												</td>
 												<td className="px-6 py-4 text-sm text-gray-900">
-													${product.price.toFixed(2)}
+													₦{product.price.toFixed(2)}
 												</td>
 												<td className="px-6 py-4 text-sm text-gray-900">
 													{product.quantity}
