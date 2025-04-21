@@ -87,7 +87,7 @@ export default function Home() {
 			console.error("Checkout error:", err);
 		}
 
-		const res = await fetch("http://localhost:5000/create-checkout-session", {
+		const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/create-checkout-session`, {
 			method: "POST",
 			headers: {
 				"Content-Type": "application/json",
@@ -205,7 +205,7 @@ export default function Home() {
 									<span>₦{totalAmount.toLocaleString()}</span>
 								</div>
 								<button
-									className="w-full bg-indigo-600 text-white py-2 px-4 rounded-lg hover:bg-indigo-700 transition-colors"
+									className="w-full bg-indigo-600 text-white py-2 px-4 rounded-lg hover:bg-indigo-700 transition-colors cursor-pointer"
 									onClick={checkout}
 								>
 									Checkout
