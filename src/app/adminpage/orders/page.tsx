@@ -105,7 +105,8 @@ export default function Orders() {
 				decodedToken.exp < Math.floor(Date.now() / 1000)
 			) {
 				localStorage.removeItem("token");
-				window.location.href = "/login";
+				localStorage.setItem("redirectAfterLogin", window.location.pathname);
+				router.push("/login");
 				return;
 			}
 
@@ -122,6 +123,7 @@ export default function Orders() {
 					setLoading(false);
 				});
 		} else {
+			localStorage.setItem("redirectAfterLogin", window.location.pathname);
 			router.push("/login");
 		}
 	}, [router]);
