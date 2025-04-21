@@ -18,7 +18,7 @@ type Order = {
 	id: number;
 	userId: number;
 	name: string;
-	user: string;
+	username: string;
     cart: {
         name: string,
         quantity: number,
@@ -254,7 +254,7 @@ export default function Orders() {
 												</td>
 												<td className="px-6 py-4">
 													<div className="text-sm font-medium text-gray-900">
-														{order.user}
+														{order.username}
 													</div>
 												</td>
 												<td className="px-6 py-4">

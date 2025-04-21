@@ -1,12 +1,14 @@
 "use client";
-import { useState, useEffect, useContext } from "react";
+import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 
 import Navbar from "./components/Navbar"
-import CartContext from "@/context/orderContext";
+import { useCartContext } from "@/context/orderContext";
 
 import { jwtDecode } from "jwt-decode";
+import { useProductContext } from "@/context/ProductContext";
+import { useNavbarContext } from "@/context/NavbarContext";
 
 type DecodedToken = {
   user: string,
@@ -17,21 +19,21 @@ type Product = {
   id: number,
   name: string,
   price: number,
-  imageUrl: string
+  imageUrl: string,
+  category: string
 }
 
 export default function Home() {
   // const [user, setUser] = useState<string | null>(null);
-  const cartContext = useContext(CartContext);
-  if (!cartContext) {
-    throw new Error("CartContext is undefined. Make sure you are using OrderProvider.");
-  }
-  const { cartItems, setCartItems } = cartContext;
-
-  const [products, setProducts] = useState<Product[]>([]);
+  const { cartItems, setCartItems } = useCartContext();
+  const { setProducts } = useProductContext();
+  const { isCartOpen, setIsCartOpen, filteredProducts } = useNavbarContext()
   // const [cartItems, setCartItems] = useState<(Product & { quantity: number })[]>([]);
-  const [isCartOpen, setIsCartOpen] = useState(false);
+  // const [searchTerm, setSearchTerm] = useState("");
+  
   const router = useRouter();
+
+  // const filteredProducts = products.filter((product) => product.name.toLowerCase().includes(searchTerm.toLowerCase()));
 
   useEffect(() => {
 
@@ -42,7 +44,7 @@ export default function Home() {
       setProducts(data.products)
     })
 
-  }, [])
+  }, [setProducts])
 
 
   // useEffect(() => {
@@ -202,9 +204,9 @@ export default function Home() {
 
   return (
     <div className="container mx-auto px-4 sm:px-6 lg:px-6">
-      <Navbar onCartClick={() => setIsCartOpen(true)} cartItemsCount={cartItems.length}>
+      <Navbar>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
-          {products.map((product, index) => (
+          {filteredProducts.map((product, index) => (
             <div key={index} className="bg-white rounded-lg shadow-lg overflow-hidden transition-transform hover:scale-105">
               <div className="relative h-48 sm:h-64">
                 <Image 

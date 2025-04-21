@@ -1,5 +1,5 @@
 "use client";
-import { createContext, useState } from 'react'
+import { createContext, useContext, useState } from 'react'
 
 type CartItem = {
     id?: number,
@@ -15,6 +15,14 @@ type CartContextType = {
 }
 
 const CartContext =  createContext<CartContextType | undefined>(undefined);
+
+export const useCartContext = () => {
+  const context = useContext(CartContext);
+  if (!context) {
+    throw new Error("useCartContext must be used within the layout")
+  }
+  return context
+}
 
 export function OrderProvider({children}: {children: React.ReactNode}) {
     const [cartItems, setCartItems] = useState<CartItem[]>([]);

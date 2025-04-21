@@ -4,19 +4,18 @@ import Link from "next/link";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import SearchIcon from "@mui/icons-material/Search";
 import PersonOutlineIcon from "@mui/icons-material/PersonOutline";
+import { useNavbarContext } from "@/context/NavbarContext";
 
-type NavbarProps = {
-  children: React.ReactNode;
-  onCartClick: () => void;
-  cartItemsCount: number;
-}
 
-export default function Navbar({ children, onCartClick, cartItemsCount }: NavbarProps) {
+export default function Navbar({ children }: { children: React.ReactNode}) {
   const searchParams = useSearchParams();
   const router = useRouter();
-  const [searchTerm, setSearchTerm] = useState("");
   const [isScrolled, setIsScrolled] = useState(false);
-  const [selectedCategory, setSelectedCategory] = useState<string>("all");
+
+  const { onCartClick, cartItemsCount, searchTerm, setSearchTerm, selectedCategory, setSelectedCategory } = useNavbarContext();
+  // const [selectedCategory, setSelectedCategory] = useState<string>("all");
+
+  // const filteredCategory = selectedCategory === "all" ? products : products.filter((product) => product.category === selectedCategory)
   
   useEffect(() => {
     setSelectedCategory(searchParams.get("category") || "all")
@@ -25,7 +24,7 @@ export default function Navbar({ children, onCartClick, cartItemsCount }: Navbar
     };
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
-  }, [searchParams]);
+  }, [searchParams, setSelectedCategory]);
   
   const handleCategory = async (category: string) => {
     try {
