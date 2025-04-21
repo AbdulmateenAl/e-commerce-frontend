@@ -24,16 +24,11 @@ type Product = {
 }
 
 export default function Home() {
-  // const [user, setUser] = useState<string | null>(null);
   const { cartItems, setCartItems } = useCartContext();
   const { setProducts } = useProductContext();
   const { isCartOpen, setIsCartOpen, filteredProducts } = useNavbarContext()
-  // const [cartItems, setCartItems] = useState<(Product & { quantity: number })[]>([]);
-  // const [searchTerm, setSearchTerm] = useState("");
   
   const router = useRouter();
-
-  // const filteredProducts = products.filter((product) => product.name.toLowerCase().includes(searchTerm.toLowerCase()));
 
   useEffect(() => {
 
@@ -45,26 +40,6 @@ export default function Home() {
     })
 
   }, [setProducts])
-
-
-  // useEffect(() => {
-  //   const token = localStorage.getItem("token")
-
-  //   if (token) {
-  //     const decodedToken = jwtDecode<DecodedToken>(token)
-
-  //     if (decodedToken.exp && decodedToken.exp < Math.floor(Date.now() / 1000)) {
-  //       localStorage.removeItem("token");
-  //       router.push("/login");
-  //       return
-  //     }
-  //     setUser(decodedToken.user)
-
-  //   } else {
-  //     //router.push("/login");
-  //   }
-    
-  // }, [router, user])
 
   const addToCart = async (product: Product) => {
 

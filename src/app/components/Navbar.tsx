@@ -13,12 +13,10 @@ export default function Navbar({ children }: { children: React.ReactNode}) {
   const [isScrolled, setIsScrolled] = useState(false);
 
   const { onCartClick, cartItemsCount, searchTerm, setSearchTerm, selectedCategory, setSelectedCategory } = useNavbarContext();
-  // const [selectedCategory, setSelectedCategory] = useState<string>("all");
-
-  // const filteredCategory = selectedCategory === "all" ? products : products.filter((product) => product.category === selectedCategory)
   
   useEffect(() => {
-    setSelectedCategory(searchParams.get("category") || "all")
+    const newCategory = searchParams.get("category") || "all";
+    setSelectedCategory(newCategory);
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 0);
     };
@@ -28,7 +26,6 @@ export default function Navbar({ children }: { children: React.ReactNode}) {
   
   const handleCategory = async (category: string) => {
     try {
-      // const data = await fetchData();
       router.push(`/?category=${category}`);
       console.log(selectedCategory);
     } catch (error) {
@@ -73,7 +70,7 @@ export default function Navbar({ children }: { children: React.ReactNode}) {
             <div className="flex items-center space-x-2 sm:space-x-4">
               <button 
                 onClick={onCartClick}
-                className="relative p-1.5 sm:p-2 rounded-full hover:bg-gray-100 transition-colors"
+                className="relative p-1.5 sm:p-2 rounded-full hover:bg-gray-100 transition-colors cursor-pointer"
               >
                 <ShoppingCartIcon className="text-gray-600 h-5 w-5 sm:h-6 sm:w-6" />
                 {cartItemsCount > 0 && (
@@ -135,11 +132,3 @@ export default function Navbar({ children }: { children: React.ReactNode}) {
     </div>
   );
 }
-
-// async function fetchData() {
-//   const res = await fetch(`${process.env.BASE_URL}/category`);
-//   if (!res.ok) {
-//     throw new Error("Failed to fetch categories");
-//   }
-//   return res.json();
-// }
