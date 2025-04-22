@@ -16,15 +16,12 @@ type DecodedToken = {
 
 type Order = {
 	id: number;
-	userId: number;
-	name: string;
 	username: string;
     cart: {
         name: string,
         quantity: number,
         price: number,
     }[],
-	quantity: number;
 	totalAmount: number;
 	status: "pending" | "shipped" | "delivered";
 	created_at: string;
@@ -38,13 +35,6 @@ export default function Orders() {
 	const [searchTerm, setSearchTerm] = useState("");
 	const [error, setError] = useState("");
 	const [statusFilter, setStatusFilter] = useState<string>("all");
-
-	// const filteredOrders = orders.filter(order => {
-	//     const matchesSearch = order.username.toLowerCase().includes(searchTerm.toLowerCase()) ||
-	//         order.id.toString().includes(searchTerm);
-	//     const matchesStatus = statusFilter === "all" || order.status === statusFilter;
-	//     return matchesSearch && matchesStatus;
-	// });
 
 	const filteredOrders =
 		statusFilter === "all"
