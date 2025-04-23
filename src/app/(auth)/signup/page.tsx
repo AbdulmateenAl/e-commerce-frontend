@@ -37,11 +37,10 @@ export default function SignUp() {
         try {
             const user = {
                 username,
-                email,
                 password
             };
 
-            const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/signup`, {
+            const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/register`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
